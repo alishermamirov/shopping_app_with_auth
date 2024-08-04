@@ -41,7 +41,7 @@ class _ProductsGridState extends State<ProductsGrid> {
             child: CircularProgressIndicator(),
           );
         } else {
-          if (snapshot.error == null) {
+          if (snapshot.hasData) {
             return Consumer<Products>(
               builder: (context, productData, child) {
                 final products = widget.showOnlyFavorites
