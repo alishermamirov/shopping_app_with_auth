@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app_with_auth/providers/auth.dart';
 
 import '../screens/home_screen.dart';
 import '../screens/manage_product_screen.dart';
 import '../screens/orders_screen.dart';
-
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
@@ -35,6 +36,15 @@ class MainDrawer extends StatelessWidget {
             leading: Icon(Icons.manage_search),
             onTap: () => Navigator.of(context)
                 .pushReplacementNamed(ManageProductScreen.routeName),
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text("Chiqish"),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/");
+              Provider.of<Auth>(context, listen: false).logout();
+            },
           ),
         ],
       ),

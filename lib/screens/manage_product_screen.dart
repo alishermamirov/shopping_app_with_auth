@@ -13,12 +13,11 @@ class ManageProductScreen extends StatelessWidget {
   static const routeName = "/manage-product";
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<Products>(context, listen: false)
-        .getProductFromFirebase();
+        .getProductFromFirebase(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final products = Provider.of<Products>(context);
     return Scaffold(
       drawer: const MainDrawer(),
       appBar: AppBar(
@@ -33,19 +32,36 @@ class ManageProductScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => _refreshProducts(context),
-        child: ListView.builder(
-          itemCount: products.list.length,
-          itemBuilder: (context, index) {
-            final product = products.list[index];
-            return ChangeNotifierProvider<Product>.value(
-              value: product,
-              child: const UserProductItem(),
-            );
-          },
-        ),
-      ),
+      body: FutureBuilder(
+          future: _refreshProducts(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              return RefreshIndicator(
+                  onRefresh: () => _refreshProducts(context),
+                  child: Consumer<Products>(
+                    builder: (context, products, child) {
+                      return ListView.builder(
+                        itemCount: products.list.length,
+                        itemBuilder: (context, index) {
+                          final product = products.list[index];
+                          return ChangeNotifierProvider<Product>.value(
+                            value: product,
+                            child: const UserProductItem(),
+                          );
+                        },
+                      );
+                    },
+                  ));
+            } else {
+              return const Center(
+                child: Text("Xatolik sodir bo'ldi"),
+              );
+            }
+          }),
     );
   }
 }

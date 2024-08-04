@@ -34,49 +34,49 @@ class _ProductsGridState extends State<ProductsGrid> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _productFuture,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          if (snapshot.hasData) {
-            return Consumer<Products>(
-              builder: (context, productData, child) {
-                final products = widget.showOnlyFavorites
-                    ? productData.favorites
-                    : productData.list;
-                return products.isEmpty
-                    ? const Center(
-                        child: Text("Mahsulotlar mavjud emas"),
-                      )
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: products.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          childAspectRatio: 3 / 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 20,
-                        ),
-                        itemBuilder: (context, index) {
-                          return ChangeNotifierProvider<Product>.value(
-                            value: products[index],
-                            child: const ProductGridItem(),
-                          );
-                        },
-                      );
-              },
+        future: _productFuture,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           } else {
-            return const Center(
-              child: Text("Xatolik yuz berdi"),
-            );
+            if (snapshot.error == null) {
+              return Consumer<Products>(
+                builder: (context, productData, child) {
+                  final products = widget.showOnlyFavorites
+                      ? productData.favorites
+                      : productData.list;
+                  return products.isEmpty
+                      ? const Center(
+                          child: Text("Mahsulotlar mavjud emas"),
+                        )
+                      : GridView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: products.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            childAspectRatio: 3 / 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                          ),
+                          itemBuilder: (context, index) {
+                            return ChangeNotifierProvider<Product>.value(
+                              value: products[index],
+                              child: const ProductGridItem(),
+                            );
+                          },
+                        );
+                },
+              );
+            } else {
+              return const Center(
+                child: Text("Xatolik yuz berdi"),
+              );
+            }
           }
-        }
-      },
-    );
+        });
   }
 }

@@ -6,6 +6,13 @@ import '../models/cart_item.dart';
 import '../models/order.dart';
 
 class Orders with ChangeNotifier {
+  String? _authToken;
+  String? _userId;
+  void SetParams(String? authToken, String? userId) {
+    _authToken = authToken;
+    _userId = userId;
+  }
+
   List<Order> _items = [];
 
   List<Order> get items {
@@ -14,7 +21,7 @@ class Orders with ChangeNotifier {
 
   Future<void> getOrderfromFirebase() async {
     final url = Uri.parse(
-        "https://shopping-app-8d541-default-rtdb.firebaseio.com/orders.json");
+        "https://shopping-app-8d541-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken");
 
     try {
       final List<Order> loadedOrders = [];
@@ -55,7 +62,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addToOrders(double totalPrice, List<CartItem> products) async {
     final url = Uri.parse(
-        "https://shopping-app-8d541-default-rtdb.firebaseio.com/orders.json");
+        "https://shopping-app-8d541-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken");
 
     try {
       final response = await http.post(
