@@ -32,7 +32,6 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
-
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     final url = Uri.parse(
@@ -121,7 +120,6 @@ class Auth with ChangeNotifier {
     return _authenticate(email, password, "signInWithPassword");
   }
 
-  
   Future<bool> autoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey("userdata")) {
