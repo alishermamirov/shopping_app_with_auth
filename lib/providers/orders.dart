@@ -21,7 +21,7 @@ class Orders with ChangeNotifier {
 
   Future<void> getOrderfromFirebase() async {
     final url = Uri.parse(
-        "https://shopping-app-8d541-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken");
+        "https://sever-url/orders/$_userId.json?auth=$_authToken");
 
     try {
       final List<Order> loadedOrders = [];
