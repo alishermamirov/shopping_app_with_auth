@@ -62,7 +62,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addToOrders(double totalPrice, List<CartItem> products) async {
     final url = Uri.parse(
-        "https://shopping-app-8d541-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken");
+        "https://server-url/orders/$_userId.json?auth=$_authToken");
 
     try {
       final response = await http.post(
