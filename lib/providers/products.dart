@@ -32,7 +32,7 @@ class Products with ChangeNotifier {
     final filterString =
         filterbyUser ? 'orderBy="creatorId"&equalTo="$_userId"' : '';
     final url = Uri.parse(
-        "https://shopping-app-8d541-default-rtdb.firebaseio.com/products.json?auth=$_authToken&$filterString");
+        "https://server-url/products.json?auth=$_authToken&$filterString");
 
     try {
       final response = await http.get(url);
@@ -73,7 +73,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        "https://shopping-app-8d541-default-rtdb.firebaseio.com/products.json?auth=$_authToken");
+        "https://server-url/products.json?auth=$_authToken");
     try {
       final response = await http.post(
         url,
@@ -111,7 +111,7 @@ class Products with ChangeNotifier {
     );
     if (index >= 0) {
       final url = Uri.parse(
-          "https://shopping-app-8d541-default-rtdb.firebaseio.com/products/${updatedProduct.id}.json?auth=$_authToken");
+          "https://server-url/products/${updatedProduct.id}.json?auth=$_authToken");
       try {
         await http.patch(
           url,
@@ -133,7 +133,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-        "https://shopping-app-8d541-default-rtdb.firebaseio.com/products/$id.json?auth=$_authToken");
+        "https://server-url/products/$id.json?auth=$_authToken");
     try {
       final deletedProduct = _list.firstWhere((element) => element.id == id);
       final index = _list.indexWhere(
